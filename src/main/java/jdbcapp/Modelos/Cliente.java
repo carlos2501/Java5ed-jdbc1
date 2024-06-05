@@ -42,4 +42,11 @@ public class Cliente {
     public void setNombreContacto(String nombreContacto) {
         this.nombreContacto = nombreContacto;
     }
+
+    @Override
+    public String toString() {
+        return codigoCliente + " | " +
+               nombreCliente + " | " +
+               nombreContacto;
+    }
 }

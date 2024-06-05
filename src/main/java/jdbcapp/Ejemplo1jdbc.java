@@ -1,21 +1,22 @@
 package jdbcapp;
 
+import jdbcapp.Modelos.Cliente;
+import jdbcapp.Repos.Repo;
+import jdbcapp.Repos.RepoClienteImpl;
 import jdbcapp.util.ConexionBD;
 
 import java.sql.*;
+import java.util.List;
 
 public class Ejemplo1jdbc {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
 
-        try (Connection conex = ConexionBD.abrixConexion();
-             Statement sent = conex.createStatement();
-             ResultSet result = sent.executeQuery("SELECT * FROM producto")){
-            // El cursor del resultset apunta ANTES del primer registro
-            while (result.next()) {
-                String datos = result.getString("nombre") + " " +
-                        result.getString("codigo_producto") + " "
-                        + result.getDouble(8);
-                System.out.println(datos);
+        try (Connection conex = ConexionBD.abrirConexion()){;
+            Repo<Cliente> repo = new RepoClienteImpl();
+            System.out.println("------------------ Listado de clientes ------------------------");
+            List<Cliente> lista = repo.findAll();
+            for(Cliente c : lista){
+                System.out.println(c);
             }
         } catch (SQLException e) {
             e.printStackTrace();

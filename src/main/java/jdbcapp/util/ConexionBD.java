@@ -10,7 +10,7 @@ public class ConexionBD {
     private static String clave = "jardinero%";
     private static Connection conex;
 
-    public static Connection abrixConexion() throws SQLException {
+    public static Connection abrirConexion() throws SQLException {
         if(conex == null) {
             conex = DriverManager.getConnection(url,usuario, clave);
         }
