@@ -9,19 +9,25 @@ import java.sql.*;
 import java.util.List;
 
 public class Ejemplo1jdbc {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
 
-        try (Connection conex = ConexionBD.abrirConexion()){
-            Repo<Cliente> repo = new RepoClienteImpl();
+        // Creamos una nuieva conexión en el try con recursos que enviaremos al contructor del repositorio
+       try (Connection conex = ConexionBD.abrirConexion()){
+           // Enviamos la conexión abierta en el try al constructor del repositorio
+            Repo<Cliente> repo = new RepoClienteImpl(conex);
             System.out.println("------------------ Listado de clientes ------------------------");
             List<Cliente> lista = repo.findAll();
             for(Cliente c : lista){
                 System.out.println(c);
             }
             System.out.println("------------------ Datos cliente 7 ------------------------");
-            System.out.println(repo.findBy(7).get());
-        } catch (SQLException e) {
+            if(repo.findBy(7).get().getCodigoCliente() != null) {
+                System.out.println(repo.findBy(700).get());
+            } else {
+                System.out.println("El cliente 700 no existe");
+            }
+       } catch (SQLException e) {
             e.printStackTrace();
-        }
+       }
     }
 }

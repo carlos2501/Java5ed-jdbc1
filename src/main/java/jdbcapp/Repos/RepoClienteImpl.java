@@ -1,7 +1,7 @@
 package jdbcapp.Repos;
 
 import jdbcapp.Modelos.Cliente;
-import jdbcapp.util.ConexionBD;
+//import jdbcapp.util.ConexionBD;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,16 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 public class RepoClienteImpl implements Repo<Cliente> {
-
+    /*
     private Connection cogeConexion() throws SQLException {
         return ConexionBD.abrirConexion();
+    }
+    */
+
+    // Utilizamos la conexión creada en la aplicación principal (main). Esta conexión se mantiene abierta mientras
+    // este activa la aplicación principal
+    private Connection con;
+
+    public RepoClienteImpl(Connection conn) {
+        con = conn;
     }
 
     @Override
     public List<Cliente> findAll() {
         List<Cliente> clientes = new ArrayList<>();
 
-        try(Statement stmt = cogeConexion().createStatement();
+        try(Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT codigo_cliente, nombre_cliente, nombre_contacto FROM Cliente")){
             while (rs.next()) {
                 clientes.add(crearCliente(rs));
@@ -35,7 +44,7 @@ public class RepoClienteImpl implements Repo<Cliente> {
         Cliente cli = new Cliente();
 
         // Creamos una sentencia con parámetros para ejecutar la consulta
-        try(PreparedStatement stmt = cogeConexion()
+        try(PreparedStatement stmt = con
                 .prepareStatement("SELECT * FROM Cliente WHERE codigo_cliente = ?")){
 
             // Asignamos el valor de los parámetros
