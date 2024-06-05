@@ -22,6 +22,10 @@ public class Ejemplo1jdbc {
             System.out.println(c);
         }
         System.out.println("------------------ Datos cliente 7 ------------------------");
-        System.out.println(repo.findBy(7).get());
+        if(repo.findBy(7).get().getCodigoCliente() != null) {
+            System.out.println(repo.findBy(700).get());
+        } else {
+            System.out.println("El cliente 700 no existe");
+        }
     }
 }
