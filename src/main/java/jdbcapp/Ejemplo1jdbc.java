@@ -1,13 +1,13 @@
 package jdbcapp;
 
+import jdbcapp.util.ConexionBD;
+
 import java.sql.*;
 
 public class Ejemplo1jdbc {
     public static void main(String[] args) {
-        String usuario = "jardinero";
-        String url = "jdbc:mysql://localhost:3306/jardineria";
-        String clave = "jardinero%";
-        try (Connection conex = DriverManager.getConnection(url, usuario, clave);
+
+        try (Connection conex = ConexionBD.abrixConexion();
              Statement sent = conex.createStatement();
              ResultSet result = sent.executeQuery("SELECT * FROM producto")){
             // El cursor del resultset apunta ANTES del primer registro
