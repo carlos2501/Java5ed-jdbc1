@@ -3,13 +3,11 @@ package jdbcapp;
 import jdbcapp.Modelos.Cliente;
 import jdbcapp.Repos.Repo;
 import jdbcapp.Repos.RepoClienteImpl;
-import jdbcapp.util.ConexionBD;
 
-import java.sql.*;
 import java.util.List;
 
 public class Ejemplo1jdbc {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
         /*
             En este caso, la conexión se abre y se cierra en cada llamada a los procedimientos del repositorio
             por lo que no es necesario crearla en la aplicación principal
