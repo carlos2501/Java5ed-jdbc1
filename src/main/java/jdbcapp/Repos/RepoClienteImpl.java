@@ -51,12 +51,10 @@ public class RepoClienteImpl implements Repo<Cliente> {
                     cli = crearCliente(rs);
                 }
             }
-
-            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        // Devolemos el cliente encontrado o un objeto nulo
+        // Devolvemos el cliente encontrado o un objeto nulo
         return Optional.of(cli);
     }
 
@@ -66,8 +64,31 @@ public class RepoClienteImpl implements Repo<Cliente> {
     }
 
     @Override
-    public Optional<Cliente> save(Cliente entity) {
-        return Optional.empty();
+    public Optional<Cliente> save(Cliente cli) {
+        // Preparamos la sentencia SQL que tenemos que ejecutar en cada caso
+        String qry;
+        if(cli.getCodigoCliente() != null && cli.getCodigoCliente() > 0) {
+            // El cliente ya existe (tiene un codigo_cliente asignado)
+            qry ="UPDATE Cliente SET nombre_cliente=?, nombre_contacto=? WHERE codigo_cliente=?";
+        } else {
+            // Es un cliente nuevo
+            qry = "INSERT INTO Cliente(nombre_cliente, nombre_contacto) VALUES(?,?)";
+        }
+
+        try (Connection conn = cogeConexion();
+            PreparedStatement stmt = conn.prepareStatement(qry)){
+            // Asigno los valores de los parámetros de la consulta
+            stmt.setString(1, cli.getNombreCliente());
+            stmt.setString(2, cli.getNombreContacto());
+            if(cli.getCodigoCliente() != null && cli.getCodigoCliente() > 0){
+                stmt.setInt(3, cli.getCodigoCliente());
+            }
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.of(cli);
     }
 
     @Override

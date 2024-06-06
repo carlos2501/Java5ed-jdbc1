@@ -6,7 +6,7 @@ import jdbcapp.Repos.RepoClienteImpl;
 
 import java.util.List;
 
-public class Ejemplo1jdbc {
+public class Ejemplo1jdbcEditar {
     public static void main(String[] args)  {
         /*
             En este caso, la conexión se abre y se cierra en cada llamada a los procedimientos del repositorio
@@ -25,16 +25,15 @@ public class Ejemplo1jdbc {
         } else {
             System.out.println("El cliente 700 no existe");
         }
-        System.out.println("------------------ Añadimos un cliente nuevo ------------------------");
-        Cliente cli = new Cliente();
-        Cliente ncli;
-        cli.setNombreCliente("Cliente nuevo 2");
-        cli.setNombreContacto("Contacto 1 del Cliente nuevo 2");
-        ncli = repo.save(cli).get();
-        if(ncli.getCodigoCliente() == null) {
-            System.out.println("He creado un cliente nuevo");
+        System.out.println("------------------ Editamos un cliente  ------------------------");
+        Cliente cli = repo.findBy(300).get();
+        if(cli.getCodigoCliente() != null && cli.getCodigoCliente() > 0) {
+            cli.setNombreCliente("Pepe");
+            repo.save(cli);
+            System.out.println("He modificado el cliente -> " + cli);
         } else {
-            System.out.println("He actualizado el cliente");
+            System.out.println("No he cambiado nada porque el cliente no se encuentra");
         }
+
     }
 }

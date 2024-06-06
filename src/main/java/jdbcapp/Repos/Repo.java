@@ -8,6 +8,6 @@ public interface Repo<T> {
     List<T> findAll();
     Optional<T> findBy(Integer id);
     Optional<T> findByCadena(String id);
-    Optional<T> save(T entity);
+    Optional<T> save(T cli);
     void borrar(Integer id);
 }
