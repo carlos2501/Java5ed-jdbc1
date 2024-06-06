@@ -18,8 +18,9 @@ public class RepoClienteImpl implements Repo<Cliente> {
     public List<Cliente> findAll() {
         List<Cliente> clientes = new ArrayList<>();
 
-        try(Statement stmt = cogeConexion().createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT codigo_cliente, nombre_cliente, nombre_contacto FROM Cliente")){
+        try(Connection conn = cogeConexion();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT codigo_cliente, nombre_cliente, nombre_contacto FROM Cliente")){
             while (rs.next()) {
                 clientes.add(crearCliente(rs));
             }
@@ -35,7 +36,8 @@ public class RepoClienteImpl implements Repo<Cliente> {
         Cliente cli = new Cliente();
 
         // Creamos una sentencia con parámetros para ejecutar la consulta
-        try(PreparedStatement stmt = cogeConexion()
+        try(Connection conn = cogeConexion();
+            PreparedStatement stmt = conn
                 .prepareStatement("SELECT * FROM Cliente WHERE codigo_cliente = ?")){
 
             // Asignamos el valor de los parámetros
