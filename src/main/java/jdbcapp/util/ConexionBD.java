@@ -11,9 +11,10 @@ public class ConexionBD {
     private static Connection conex;
 
     public static Connection abrirConexion() throws SQLException {
-        if(conex == null) {
-            conex = DriverManager.getConnection(url,usuario, clave);
-        }
-        return conex;
+        /*
+            Como en el repositorio se abre y cierra la conexión en cada llamada (utilizamos try con recursos), cada vez
+            necesitemos una conexión, hay que crearla y abrirla.
+         */
+        return DriverManager.getConnection(url,usuario, clave);
     }
 }
