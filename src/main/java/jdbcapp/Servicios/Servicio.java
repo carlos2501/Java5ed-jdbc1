@@ -3,13 +3,12 @@ package jdbcapp.Servicios;
 import jdbcapp.Modelos.Cliente;
 import jdbcapp.Modelos.Pedido;
 
-import java.awt.color.ProfileDataException;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface Servicio {
     List<Pedido> listaPed();
-    Pedido porCodigo(Integer ped);
+    Optional<Pedido> porCodigo(Integer ped);
     Pedido guardaPed (Pedido ped);
     void borraPed(Integer codPed);
     List<Cliente> listaCli();

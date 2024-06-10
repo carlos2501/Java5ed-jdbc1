@@ -5,11 +5,9 @@ import jdbcapp.Modelos.Pedido;
 import jdbcapp.Repos.Repo;
 import jdbcapp.Repos.RepoClienteImpl;
 import jdbcapp.Repos.RepoPedidoImpl;
-import jdbcapp.util.ConexionBD;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class ServicoImpl implements Servicio {
     private Repo<Cliente> repoCli;
@@ -26,8 +24,8 @@ public class ServicoImpl implements Servicio {
     }
 
     @Override
-    public Pedido porCodigo(Integer ped) {
-        return null;
+    public Optional<Pedido> porCodigo(Integer ped) {
+        return repoPed.findBy(ped);
     }
 
     @Override
