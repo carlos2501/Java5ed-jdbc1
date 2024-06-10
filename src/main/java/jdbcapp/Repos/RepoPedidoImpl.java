@@ -73,13 +73,42 @@ public class RepoPedidoImpl implements Repo<Pedido>{
     }
 
     @Override
-    public Optional<Pedido> save(Pedido cli) {
-        return Optional.empty();
+    public Optional<Pedido> save(Pedido ped) {
+        String qry;
+        if (ped.getCodPedido() != null && ped.getCodPedido() > 0) {
+            qry = """
+                  UPDATE Pedido p
+                  SET p.fecha_pedido = ? , p.codigo_cliente = ?
+                  WHERE p.codigo_pedido = ?
+                  """;
+        } else {
+            //Es un cliente nuevo
+            qry = "INSERT INTO Pedido(fecha_pedido, codigo_cliente) VALUES(?,?)";
+        }
+
+        try (Connection conn = cogeConexion();
+             PreparedStatement stmt = conn.prepareStatement(qry)) {
+            stmt.setDate(1, ped.getFechaPedido());
+            stmt.setInt(2, ped.getCliente().getCodigoCliente());
+            if (ped.getCodPedido() != null && ped.getCodPedido() > 0) {
+                stmt.setInt(3, ped.getCodPedido());
+            }
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.of(ped);
     }
 
     @Override
     public void borrar(Integer id) {
-
+        try (Connection conn = cogeConexion();
+             PreparedStatement stmt = conn.prepareStatement("DELETE FROM pedido WHERE codigo_pedido = ? ")){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Pedido crearPedido(ResultSet rs) throws SQLException {
